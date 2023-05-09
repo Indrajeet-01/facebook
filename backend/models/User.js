@@ -29,7 +29,7 @@ const userSchema = new  mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, "first name is required"],
+        required: [true, "password name is required"],
         unique: true,
     },
     picture: {

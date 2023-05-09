@@ -1,8 +1,15 @@
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import RegisterInput from "../inputs/registerinput";
+import DotLoader from "react-spinners/DotLoader";
+import axios from "axios"
+import {useDispatch} from "react-redux"
+import Cookies from "js-cookie"
+import {useNavigate} from "react-router-dom"
 
 export default function RegisterForm() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 const userInfos = {
     first_name: "",
     last_name: "",
@@ -36,6 +43,40 @@ const handleRegisterChange = (e) => {
     };
     const days = Array.from(new Array(getDays()), (val, index) => 1 + index);
   
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
+    const [loading, setLoading] = useState("false")
+
+    
+
+    const registerSubmit = async() => {
+      try {
+        const {data} = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`,
+        {
+          first_name,
+          last_name,
+          email,
+          password,
+          bYear,
+          bMonth,
+          bDay,
+          gender,
+        }
+        )
+        setError("")
+        setSuccess(data.message)
+        const {message, ...rest} = data
+        setTimeout(() => {
+          dispatch({type: "LOGIN", payload: rest})
+          Cookies.set("user", JSON.stringify(rest))
+          navigate("/")
+        }, 2000)
+      } catch (error) {
+        setLoading(false)
+        setSuccess("")
+        setError(error.response.data.message)
+      }
+    }
 
 return (
     <div className="blur">
@@ -57,7 +98,7 @@ return (
           bDay,
           gender,
         }}
-        
+        onSubmit={registerSubmit}
         >
           {(formik) => (
             <Form className="register_form">
@@ -175,8 +216,19 @@ return (
                 notifications from us and can opt out at any time.
               </div>
               <div className="reg_btn_wrapper">
-                <button className="blue_btn open_signup">Sign Up</button>
+                <button className="blue_btn open_signup" >Sign Up</button>
               </div>
+              <DotLoader
+        color="#1876f2"
+        loading={loading}
+        
+        size={30}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+              {error && <div className="error_text">{error}</div>}
+              {success && <div className="success_text">{success}</div>}
+              
             </Form>
           )}
         </Formik>

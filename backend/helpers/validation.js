@@ -11,7 +11,7 @@ exports.validateLength = (text,min,max) => {
     return true
 }
 
-/*
+
 exports.validateUsername = async (username) => {
     let a = false
 
@@ -26,4 +26,3 @@ exports.validateUsername = async (username) => {
     } while (a)
     return username
 }
-*/
