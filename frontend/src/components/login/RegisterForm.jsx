@@ -7,7 +7,7 @@ import {useDispatch} from "react-redux"
 import Cookies from "js-cookie"
 import {useNavigate} from "react-router-dom"
 
-export default function RegisterForm() {
+export default function RegisterForm({setVisible}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 const userInfos = {
@@ -82,7 +82,7 @@ return (
     <div className="blur">
     <div className="register">
         <div className="register_header">
-          <i className="exit_icon"></i>
+          <i className="exit_icon" onClick={() => setVisible(false)} ></i>
           <span>Sign Up</span>
           <span>it's quick and easy</span>
         </div>
@@ -218,14 +218,7 @@ return (
               <div className="reg_btn_wrapper">
                 <button className="blue_btn open_signup" >Sign Up</button>
               </div>
-              <DotLoader
-        color="#1876f2"
-        loading={loading}
-        
-        size={30}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
+              
               {error && <div className="error_text">{error}</div>}
               {success && <div className="success_text">{success}</div>}
               
