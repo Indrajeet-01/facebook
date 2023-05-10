@@ -13,10 +13,16 @@ export default function Header() {
     const color = "#65676b"
     const [showSearchMenu, setShowSearchMenu] = useState(false)
     const [showAllMenu, setShowAllMenu] = useState(false)
+    const [showUserMenu, setShowUserMenu] = useState(false)
     const allmenu = useRef(null)
+    const usermenu = useRef(null)
     useClickOutside(allmenu, () => {
         setShowAllMenu(false)
     })
+    useClickOutside(usermenu, () => {
+        setShowUserMenu(false)
+    })
+
     return (
         <header>
             <div className="header_left" >
@@ -26,7 +32,7 @@ export default function Header() {
                         <Logo/>
                     </div>
                 </Link>
-                <div className="search searchi" onClick={()=>{setShowSearchMenu(true)}}>
+                <div className="search search1" onClick={()=>{setShowSearchMenu(true)}}>
                     <Search color={color} />
                     <input
                         type="text"
@@ -60,11 +66,14 @@ export default function Header() {
                     <img src={user?.picture} alt="" />
                     <span>{user?.first_name}</span>
                 </Link>
-                <div className="circle_icon hover1"
-                    ref={allmenu}
-                    onClick={()=> {setShowAllMenu((prev)=>!prev)}}
-                >
+                <div className={`circle_icon hover1 ${showAllMenu && "active_header"}`} ref={allmenu}>
+                    <div
+            onClick={() => {
+              setShowAllMenu((prev) => !prev);
+            }}
+          >
                     <Menu/>
+                    </div>
                     {showAllMenu && <AllMenu/>}
                 </div>
                 <div className="circle_icon hover1" 
@@ -76,9 +85,15 @@ export default function Header() {
                     <Notifications/>
                     <div className="right_notification">5+</div>
                 </div>
-                <div className="circle_icon hover1">
+                <div className={`circle_icon hover1 ${showUserMenu && "active_header"}`} ref={usermenu}>
+                    <div
+            onClick={() => {
+              setShowUserMenu((prev) => !prev);
+            }}
+          >
                     <ArrowDown/>
-                    <UserMenu user={user}/>
+                    </div>
+                    {showUserMenu && <UserMenu user={user}/> }
                 </div>
             </div>
         </header>
