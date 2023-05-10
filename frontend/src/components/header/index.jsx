@@ -1,21 +1,32 @@
 import "./style.css"
 import {Link} from "react-router-dom"
 import {ArrowDown, Friends, Gaming, HomeActive, Logo, Market, Menu, Messenger, Notifications, Search, Watch} from "../../svg"
-// import { useState } from "react"
+import { useRef, useState } from "react"
 import {useSelector} from "react-redux"
+import SearchMenu from "./SearchMenu"
+import AllMenu from "./AllMenu"
+import useClickOutside from "../../helpers/clickOutside"
+import UserMenu from "./userMenu/UserMenu"
 export default function Header() {
     const {user} = useSelector((user) => ({...user}))
     
     const color = "#65676b"
+    const [showSearchMenu, setShowSearchMenu] = useState(false)
+    const [showAllMenu, setShowAllMenu] = useState(false)
+    const allmenu = useRef(null)
+    useClickOutside(allmenu, () => {
+        setShowAllMenu(false)
+    })
     return (
         <header>
-            <div className="header_left">
+            <div className="header_left" >
+                
                 <Link to="/" className="header_logo" >
                     <div className="circle">
                         <Logo/>
                     </div>
                 </Link>
-                <div className="search searchi">
+                <div className="search searchi" onClick={()=>{setShowSearchMenu(true)}}>
                     <Search color={color} />
                     <input
                         type="text"
@@ -23,7 +34,9 @@ export default function Header() {
                         className="hide_input"
                     />
                 </div>
+                
             </div>
+            {showSearchMenu && <SearchMenu setShowSearchMenu={setShowSearchMenu}/> }
             <div className="header_middle">
                 <Link to="/" className="middle_icon active" >
                     <HomeActive color={color} />
@@ -47,10 +60,16 @@ export default function Header() {
                     <img src={user?.picture} alt="" />
                     <span>{user?.first_name}</span>
                 </Link>
-                <div className="circle_icon hover1">
+                <div className="circle_icon hover1"
+                    ref={allmenu}
+                    onClick={()=> {setShowAllMenu((prev)=>!prev)}}
+                >
                     <Menu/>
+                    {showAllMenu && <AllMenu/>}
                 </div>
-                <div className="circle_icon hover1">
+                <div className="circle_icon hover1" 
+                    
+                >
                     <Messenger/>
                 </div>
                 <div className="circle_icon hover1">
@@ -59,6 +78,7 @@ export default function Header() {
                 </div>
                 <div className="circle_icon hover1">
                     <ArrowDown/>
+                    <UserMenu user={user}/>
                 </div>
             </div>
         </header>
