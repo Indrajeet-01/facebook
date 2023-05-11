@@ -93,9 +93,13 @@ exports.register = async (req,res) => {
 
 exports.activateAccount = async (req,res) => {
     try{
+        const validUser = req.user.id
     const {token} = req.body
     const user = jwt.verify(token,process.env.TOKEN_SECRET)
     const check = await User.findById(user.id)
+    if (validUser !== user.id) {
+        return res.status(400).json({message: "you don't have authorization to this operation"})
+    }
     if (check.verified == true) {
         return res.status(400).json({message: "this email is already exist"})
     } else {
@@ -130,6 +134,30 @@ exports.login = async (req,res) => {
             
         })
     }catch(error){
+        res.status(500).json({message: error.message})
+    }
+}
+
+exports.sendVerification = async(req,res) => {
+    try {
+        const id = req.user.id
+        const user = await  User.findById(id)
+        if (user.verified === true) {
+            return res.status(400).json({
+                message:"this account is already activated"
+            })
+        }
+        const emailVerificationToken = generateToken(
+            { id: user._id.toString()}, "30m"
+        )
+    
+        const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`
+    
+        sendVerificationEmail(user.email,user.first_name,url)
+        return res.status(200).json({
+            message:"email verification link has been sent to your email"
+        })
+    } catch(error) {
         res.status(500).json({message: error.message})
     }
 }
