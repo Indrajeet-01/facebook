@@ -201,3 +201,33 @@ exports.findUser = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   };
+
+  exports.validateResetCode = async (req, res) => {
+    try {
+      const { email, code } = req.body;
+      const user = await User.findOne({ email });
+      const Dbcode = await Code.findOne({ user: user._id });
+      if (Dbcode.code !== code) {
+        return res.status(400).json({
+          message: "Verification code is wrong..",
+        });
+      }
+      return res.status(200).json({ message: "ok" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+
+  exports.changePassword = async (req, res) => {
+    const { email, password } = req.body;
+  
+    const cryptedPassword = await bcrypt.hash(password, 12);
+    await User.findOneAndUpdate(
+      { email },
+      {
+        password: cryptedPassword,
+      }
+    );
+    return res.status(200).json({ message: "ok" });
+  };
+  
