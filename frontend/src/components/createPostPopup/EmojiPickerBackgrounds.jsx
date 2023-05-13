@@ -19,30 +19,31 @@ export default function EmojiPickerBackgrounds({
         setText(newText)
         setCursorPosition(start.length + emoji.length)
     }
-  return (
-    <div className={type2 && "images_input"}>
-    <div className={!type2 && "flex_center"}>
-                    <textarea
-                    ref={textRef}
-                    maxLength="100"
-                    value={text}
-                    placeholder={`what's on your mind, ${user.first_name}`}
-                    className={`post_input ${type2 && "input2"}`}
-                    onChange={(e) => setText(e.target.value)}
-                    >
-                    </textarea>
+return (
+    <div className={type2 ? "images_input" : ""}>
+        <div className={!type2 ? "flex_center" : ""}>
+            <textarea
+                ref={textRef}
+                maxLength="100"
+                value={text}
+                placeholder={`what's on your mind, ${user?.first_name}`}
+                className={`post_input ${type2 ? "input2" : ""}`}
+                onChange={(e) => setText(e.target.value)}
+                >
+            </textarea>
+        </div>
+        <div className={!type2 ? "post_emojis_wrap" : ""}>
+            {picker && (
+                <div className={`comment_emoji_picker ${type2 ? "movepicker2" : "rlmove"}`}>
+                    <Picker onEmojiClick={handleEmoji}/>
                 </div>
-                <div className={!type2 &&"post_emojis_wrap"}>
-                    {picker && (
-                    <div className={`comment_emoji_picker ${type2 ? "movepicker2" : "rlmove"}`}>
-                        <Picker onEmojiClick={handleEmoji}/>
-                    </div>
-                    )}
-                    {!type2 &&<img src="../../../icons/colorful.png" alt="" />}
-                    <i className={`emoji_icon_large ${type2} && "moveleft`}
-                    onClick={()=> {setPicker((prev)=>!prev)}}
-                    ></i>
-                </div>
+            )}
+            {!type2 &&<img src="../../../icons/colorful.png" alt="" />}
+            <i className={`emoji_icon_large ${type2 ? "moveleft" : ""}`}
+                onClick={()=> {setPicker((prev)=>!prev)
+                }}
+            ></i>
+        </div>
     </div>
-  )
+)
 }
