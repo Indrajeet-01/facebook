@@ -19,7 +19,7 @@ module.exports = async function (req, res, next) {
         removeTmp(file.tempFilePath);
         return res.status(400).json({ message: "File size is too large." });
       }
-    });
+    });   
     next();
   } catch (error) {
     return res.status(500).json({ message: error.message });
