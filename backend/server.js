@@ -21,7 +21,7 @@ readdirSync("./routes").map((r)=> app.use("/",require("./routes/" + r)))
 // database
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+   // useUnifiedTopology: true,
     
 })
 .then(()=>console.log("DB Connection Successfully"))
@@ -31,5 +31,5 @@ mongoose.connect(process.env.MONGO_URL, {
 
 const PORT = process.env.PORT || 8000
 app.listen(PORT, () =>{
-    console.log("server is listening..")
+  console.log(`server is running on port ${PORT}..`);
 })

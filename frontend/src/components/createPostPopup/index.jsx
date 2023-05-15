@@ -14,6 +14,7 @@ export default function CreatePostPopup({user,setVisible}) {
     const [text, setText] = useState("")
     const [showPrev, setShowPrev] = useState(true)
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("");
     const [images,setImages] = useState([])
     const [background, setBackground] = useState("")
     useClickOutside(popup, () => {
@@ -22,7 +23,7 @@ export default function CreatePostPopup({user,setVisible}) {
       const postSubmit = async () => {
         if (background) {
             setLoading(true)
-            const res = await createPost(
+            const response = await createPost(
                 null,
                 background, 
                 text,
@@ -30,9 +31,13 @@ export default function CreatePostPopup({user,setVisible}) {
                 user.id,
                 user.token)
             setLoading(false)
-            setBackground("")
-            setText("")
-            setVisible(false)
+            if (response === "ok") {
+                setBackground("");
+                setText("");
+                setVisible(false);
+              } else {
+                setError(response);
+              }
         } else if (images && images.length) {
             setLoading(true)
             const postImages = images.map((img) => {
@@ -45,14 +50,18 @@ export default function CreatePostPopup({user,setVisible}) {
                 formData.append("file", image)
             })
             const response = await uploadImages(formData,path,user.token)
-            await createPost(null,null,text,response,user.id,user.token)
+            const res = await createPost(null,null,text,response,user.id,user.token)
             setLoading(false)
-            setText("")
-            setImages("")
-            setVisible(false)
+            if (res === "ok") {
+                setText("");
+                setImages("");
+                setVisible(false);
+              } else {
+                setError(res);
+              }
         } else if (text) {
             setLoading(true)
-            const res = await createPost(
+            const response = await createPost(
                 null,
                 null, 
                 text,
@@ -60,9 +69,13 @@ export default function CreatePostPopup({user,setVisible}) {
                 user.id,
                 user.token)
             setLoading(false)
-            setBackground("")
-            setText("")
-            setVisible(false)
+            if (response === "ok") {
+                setBackground("");
+                setText("");
+                setVisible(false);
+              } else {
+                setError(response);
+              }
         } else {
             console.log("nothing")
         }
