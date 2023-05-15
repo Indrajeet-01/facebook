@@ -10,7 +10,7 @@ import CreatePost from "../../components/createPost";
 import SendVerification from "../../components/home/sendVerification";
 
 
-export default function Home({setVisible}) {
+export default function Home({setVisible,posts}) {
   const {user} = useSelector((user) => ({...user}))
   return (
     <div className="home">

@@ -1,5 +1,5 @@
 import "./style.css"
-import UserMenu from "../header/userMenu/UserMenu"
+
 import { Feeling, LiveVideo, Photo } from "../../svg";
 
 export default function CreatePost({user,setVisible}) {
