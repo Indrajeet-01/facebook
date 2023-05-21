@@ -1,10 +1,20 @@
-export default function ProfielPictureInfos({ profile, visitor }) {
+import { useRef, useState } from "react";
+import ProfilePicture from "../../components/profilePicture";
+
+export default function ProfielPictureInfos({ profile, 
+  photos,
+  visitor }) {
+  const [show, setShow] = useState(false);
+  const pRef = useRef(null);
     return (
       <div className="profile_img_wrap">
+              {show && <ProfilePicture setShow={setShow} pRef={pRef} photos={photos} />}
+
         <div className="profile_w_left">
           <div className="profile_w_img">
             <div
               className="profile_w_bg"
+              ref={pRef}
               style={{
                 backgroundSize: "cover",
                 backgroundImage: `url(${profile.picture})`,

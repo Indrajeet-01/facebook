@@ -10,43 +10,43 @@ import Activate from "./pages/home/activate";
 import Reset from "./pages/reset";
 import CreatePostPopup from "./components/createPostPopup";
 import { useEffect, useReducer, useState } from "react";
-import { postReducer } from "./functions/reducer";
-
-
+import { postsReducer } from "./functions/reducer";
 function App() {
-  const [visible, setVisible] = useState(false)
-  const {user} = useSelector((state)=>({...state}))
-  const [{loading,error,posts},dispatch] = useReducer(postReducer, {
+  const [visible, setVisible] = useState(false);
+  const { user } = useSelector((state) => ({ ...state }));
+  const [{ loading, error, posts }, dispatch] = useReducer(postsReducer, {
     loading: false,
     posts: [],
-    error: ""
-  })
-  useEffect(()=>{
-    getAllPosts()
-  },[])
-  const getAllPosts = async() => {
+    error: "",
+  });
+  useEffect(() => {
+    getAllPosts();
+  }, []);
+  const getAllPosts = async () => {
     try {
-        dispatch({
-          type: "POSTS_REQUEST"
-        })
-        const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/getAllPosts`,
+      dispatch({
+        type: "POSTS_REQUEST",
+      });
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/getAllposts`,
         {
           headers: {
-            Authorization: `Bearer ${user.token}`
-          }
+            Authorization: `Bearer ${user.token}`,
+          },
         }
-        )
-        dispatch({
-          type: "POSTS_SUCCESS",
-          payload: data
-        })
+      );
+      dispatch({
+        type: "POSTS_SUCCESS",
+        payload: data,
+      });
     } catch (error) {
       dispatch({
-        type:"POSTS_ERROR",
+        type: "POSTS_ERROR",
         payload: error.response.data.message,
-      })
+      });
     }
-  }
+  };
+
   console.log(posts)
   return (
     <div>

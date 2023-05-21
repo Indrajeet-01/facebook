@@ -13,14 +13,14 @@ import { useEffect, useRef, useState } from "react";
 
 
 export default function Home({setVisible,posts}) {
-  const {user} = useSelector((user) => ({...user}))
+  const {user} = useSelector((state) => ({...state}))
   const middle = useRef(null)
   const [height,setHeight] = useState()
   useEffect(() => {
     setHeight(middle.current.clientHeight)
   },[])
   return (
-    <div className="home" style={{height: `${height+100}px`}}>
+    <div className="home" style={{ height: `${height + 100}px` }}>
       
       <Header page="home"/>
       <LeftHome user={user}/>
@@ -30,7 +30,7 @@ export default function Home({setVisible,posts}) {
         <CreatePost user={user} setVisible={setVisible} />
         <div className="posts">
           {posts.map((post) => (
-            <Post key={post._id} post={post} user={user}/>
+            <Post key={post._id} post={post} user={user} />
           ))}
         </div>
       </div>
