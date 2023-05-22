@@ -38,13 +38,13 @@ export default function SendEmail({
             <input type="radio" name="" id="email" checked readOnly />
             <div className="label_col">
               <span>Send code via email</span>
-              <span>{userInfos?.email}</span>
+              <span>{userInfos.email}</span>
             </div>
           </label>
         </div>
         <div className="reset_right">
-          <img src={userInfos?.picture} alt="" />
-          <span>{userInfos?.email}</span>
+          <img src={userInfos.picture} alt="" />
+          <span>{userInfos.email}</span>
           <span>Facebook user</span>
         </div>
       </div>
