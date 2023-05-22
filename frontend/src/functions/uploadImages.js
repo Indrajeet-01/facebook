@@ -12,7 +12,7 @@ export const uploadImages = async (formData,path,token) => {
             }
         )
         return data
-    } catch (error) {
+    } catch (error) { 
         return error.response.data.message
     }
 }

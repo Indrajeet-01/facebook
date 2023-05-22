@@ -22,7 +22,8 @@ exports.uploadImages = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-exports.listImages = async (req, res) => {
+
+exports.listImages = async (req, res) => { 
   const { path, sort, max } = req.body;
 
   cloudinary.v2.search
