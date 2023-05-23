@@ -10,7 +10,8 @@ import Activate from "./pages/home/activate";
 import Reset from "./pages/reset";
 import CreatePostPopup from "./components/createPostPopup";
 import { useEffect, useReducer, useState } from "react";
-import { postsReducer } from "./functions/reducer";
+import { postsReducer } from "./functions/reducer"
+import Friends from "./pages/friends";
 function App() {
   const [visible, setVisible] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
@@ -50,18 +51,42 @@ function App() {
   console.log(posts)
   return (
     <div>
-      {visible && <CreatePostPopup user={user} setVisible={setVisible}/> }
+      {visible && (<CreatePostPopup       
+          user={user}
+          setVisible={setVisible}
+          posts={posts}
+          dispatch={dispatch}/> )}
       <Routes>
         
         <Route element={<LoggedInRoutes/>}>
           <Route path="/profile"
-            element={<Profile setVisible={setVisible} />} 
+            element={<Profile setVisible={setVisible}
+                  getAllPosts={getAllPosts} 
+              />} 
             exact />
         <Route path="/profile/:username"
-          element={<Profile setVisible={setVisible} />} 
+          element={<Profile setVisible={setVisible}
+          getAllPosts={getAllPosts}
+            />} 
           exact />
+                    <Route
+            path="/friends"
+            element={
+              <Friends setVisible={setVisible} getAllPosts={getAllPosts} />
+            }
+            exact
+          />
+          <Route
+            path="/friends/:type"
+            element={
+              <Friends setVisible={setVisible} getAllPosts={getAllPosts} />
+            }
+            exact
+          />
+
         <Route path="/"
           element={<Home setVisible={setVisible}
+          getAllPosts={getAllPosts}
           posts={posts} />} 
           exact />
         <Route path="/activate/:token" 
