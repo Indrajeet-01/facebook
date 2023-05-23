@@ -1,12 +1,11 @@
 const cloudinary = require("cloudinary");
-const fs = require("fs-extra");
-const path = require("path")
+const fs = require("fs");
+const path = require("path");
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
 });
-
 exports.uploadImages = async (req, res) => {
   try {
     const { path } = req.body;
@@ -22,8 +21,7 @@ exports.uploadImages = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-exports.listImages = async (req, res) => { 
+exports.listImages = async (req, res) => {
   const { path, sort, max } = req.body;
 
   cloudinary.v2.search
@@ -59,9 +57,8 @@ const uploadToCloudinary = async (file, path) => {
   });
 };
 
-
 const removeTmp = (path) => {
-  fs.unlink(path, (err) => { 
+  fs.unlink(path, (err) => {
     if (err) throw err;
-  }); 
+  });
 };
